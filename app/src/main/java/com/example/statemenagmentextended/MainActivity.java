@@ -43,13 +43,6 @@ public class MainActivity extends AppCompatActivity {
         updateViews();
     }
 
-    private void loadState() {
-        counter = sharedPreferences.getInt("counter", 0);
-        userInputText = sharedPreferences.getString("userInputText", "");
-        checkBoxState = sharedPreferences.getBoolean("checkBoxState", false);
-        switchState = sharedPreferences.getBoolean("switchState", false);
-    }
-
     private void saveState() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt("counter", counter);
@@ -59,10 +52,26 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
     }
 
+    private void loadState() {
+        counter = sharedPreferences.getInt("counter", 0);
+        userInputText = sharedPreferences.getString("userInputText", "");
+        checkBoxState = sharedPreferences.getBoolean("checkBoxState", false);
+        switchState = sharedPreferences.getBoolean("switchState", false);
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
         saveState();
+    }
+
+    private void updateViews() {
+        counterTextView.setText(String.valueOf(counter));
+        userInput.setText(userInputText);
+        checkBox.setChecked(checkBoxState);
+        optionalTextView.setVisibility(checkBoxState ? View.VISIBLE : View.GONE);
+        themeSwitch.setChecked(switchState);
+        updateTheme(switchState);
     }
 
     private void initializeViews() {
@@ -73,6 +82,26 @@ public class MainActivity extends AppCompatActivity {
         themeSwitch = findViewById(R.id.themeSwitch);
         incrementButton = findViewById(R.id.incrementButton);
         Layout = findViewById(R.id.layout);
+    }
+
+    private void updateTheme(boolean isDarkMode) {
+        if (!isDarkMode) {
+            Layout.setBackgroundColor(getResources().getColor(android.R.color.white));
+            counterTextView.setTextColor(getResources().getColor(android.R.color.black));
+            optionalTextView.setTextColor(getResources().getColor(android.R.color.black));
+            userInput.setTextColor(getResources().getColor(android.R.color.black));
+            userInput.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
+            checkBox.setTextColor(getResources().getColor(android.R.color.black));
+            themeSwitch.setTextColor(getResources().getColor(android.R.color.black));
+        } else {
+            Layout.setBackgroundColor(getResources().getColor(android.R.color.black));
+            counterTextView.setTextColor(getResources().getColor(android.R.color.white));
+            optionalTextView.setTextColor(getResources().getColor(android.R.color.white));
+            userInput.setTextColor(getResources().getColor(android.R.color.white));
+            userInput.setHintTextColor(getResources().getColor(android.R.color.white));
+            checkBox.setTextColor(getResources().getColor(android.R.color.white));
+            themeSwitch.setTextColor(getResources().getColor(android.R.color.white));
+        }
     }
 
     private void setupListeners() {
@@ -107,32 +136,7 @@ public class MainActivity extends AppCompatActivity {
         });    
     }
 
-    private void updateViews() {
-        counterTextView.setText(String.valueOf(counter));
-        userInput.setText(userInputText);
-        checkBox.setChecked(checkBoxState);
-        optionalTextView.setVisibility(checkBoxState ? View.VISIBLE : View.GONE);
-        themeSwitch.setChecked(switchState);
-        updateTheme(switchState);
-    }
+   
 
-    private void updateTheme(boolean isDarkMode) {
-        if (isDarkMode) {
-            Layout.setBackgroundColor(getResources().getColor(android.R.color.black));
-            counterTextView.setTextColor(getResources().getColor(android.R.color.white));
-            optionalTextView.setTextColor(getResources().getColor(android.R.color.white));
-            userInput.setTextColor(getResources().getColor(android.R.color.white));
-            userInput.setHintTextColor(getResources().getColor(android.R.color.white));
-            checkBox.setTextColor(getResources().getColor(android.R.color.white));
-            themeSwitch.setTextColor(getResources().getColor(android.R.color.white));
-        } else {
-            Layout.setBackgroundColor(getResources().getColor(android.R.color.white));
-            counterTextView.setTextColor(getResources().getColor(android.R.color.black));
-            optionalTextView.setTextColor(getResources().getColor(android.R.color.black));
-            userInput.setTextColor(getResources().getColor(android.R.color.black));
-            userInput.setHintTextColor(getResources().getColor(android.R.color.darker_gray));
-            checkBox.setTextColor(getResources().getColor(android.R.color.black));
-            themeSwitch.setTextColor(getResources().getColor(android.R.color.black));
-        }
-    }
+
 }
